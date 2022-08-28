@@ -120,7 +120,7 @@ def main(mode):
                                                         device=device,
                                                         debug_steps=20,
                                                         logger=logger)
-            logger.info(f"----- Epoch[{epoch:03d}/{config.TRAIN.NUM_EPOCHS:03d}], " +
+            logger.info(f"----- Epoch[{epoch:03d}/{epochs:03d}], " +
                     f"Train Loss: {train_loss:.4f}, " +
                     f"Train Acc: {train_acc:.4f}, " +
                     f"time: {train_time:.2f}")
