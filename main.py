@@ -92,9 +92,6 @@ def main(mode):
     epochs = 200
     learning_rate = 1e-4
 
-    logger = get_logger(filename=os.path.join('./outputs/', 'log.txt'))
-
-
     dataset = get_dataset(mean, std, mini_label_names, mode, data_path=data_path)
     dataloader = get_dataloader(dataset, batch_size)
     vgg19_model = build_model()
@@ -103,6 +100,9 @@ def main(mode):
     optimizer = torch.optim.Adam(vgg19_model.parameters(), lr=learning_rate)
 
     if mode == 'train':
+        train_save_path = f'./outputs/train-{time.strftime("%Y%m%d-%H-%M-%S")}'
+        logger = get_logger(filename=os.path.join(train_save_path, 'log.txt'))
+
         for epoch in range(epochs):
             logger.info(f"Now training epoch {epoch+1}. LR={optimizer.state_dict()['param_groups'][0]['lr']:.6f}")
             train_loss, train_acc, train_time = train(dataloader=dataloader,
