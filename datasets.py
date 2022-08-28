@@ -15,7 +15,7 @@ class MINICIFAR100(CIFAR100):
         download: bool = False,
     ) -> None:
 
-        super().__init__(root, transform=transform, target_transform=target_transform)
+        super().__init__(root, transform=transform, target_transform=target_transform, download=download)
         self.train = train  # training set or test set
 
         self.mini_label_names = mini_label_names
