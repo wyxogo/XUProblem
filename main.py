@@ -108,7 +108,7 @@ def main(mode):
             os.makedirs(train_save_path, exist_ok=True)
         logger = get_logger(filename=os.path.join(train_save_path, 'log.txt'))
 
-        for epoch in range(epochs):
+        for epoch in range(1,epochs+1):
             logger.info(f"Now training epoch {epoch+1}. LR={optimizer.state_dict()['param_groups'][0]['lr']:.6f}")
             train_loss, train_acc, train_time = train(dataloader=dataloader,
                                                         model=vgg19_model,
@@ -140,7 +140,7 @@ def main(mode):
             #                 f"Validation Acc@5: {val_acc5:.4f}, " +
             #                 f"time: {val_time:.2f}")
             # model save
-            if epoch % save_model_step == 0 or epoch == epochs-1:
+            if epoch % save_model_step == 0 or epoch == epochs:
                 model_path = os.path.join(
                     train_save_path, f"Epoch-{epoch}-Loss-{train_loss}")
                 torch.save(vgg19_model.state_dict(), model_path + '.pth')
