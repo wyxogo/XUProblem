@@ -92,6 +92,9 @@ def main(mode):
     epochs = 200
     learning_rate = 1e-4
 
+    validate_step = 10
+    save_model_step = 50
+
     dataset = get_dataset(mean, std, mini_label_names, mode, data_path=data_path)
     dataloader = get_dataloader(dataset, batch_size)
     vgg19_model = build_model()
@@ -117,6 +120,31 @@ def main(mode):
                                                         device=device,
                                                         debug_steps=20,
                                                         logger=logger)
+            logger.info(f"----- Epoch[{epoch:03d}/{config.TRAIN.NUM_EPOCHS:03d}], " +
+                    f"Train Loss: {train_loss:.4f}, " +
+                    f"Train Acc: {train_acc:.4f}, " +
+                    f"time: {train_time:.2f}")
+            # validation
+            # if epoch % validate_step == 0 or epoch == epochs-1:
+            #     logger.info(f'----- Validation after Epoch: {epoch}')
+            #     val_loss, val_acc1, val_acc5, val_time = validate(
+            #         dataloader=dataloader_val,
+            #         model=model,
+            #         criterion=criterion_val,
+            #         total_batch=len(dataloader_val),
+            #         debug_steps=config.REPORT_FREQ,
+            #         logger=logger)
+            #     logger.info(f"----- Epoch[{epoch:03d}/{config.TRAIN.NUM_EPOCHS:03d}], " +
+            #                 f"Validation Loss: {val_loss:.4f}, " +
+            #                 f"Validation Acc@1: {val_acc1:.4f}, " +
+            #                 f"Validation Acc@5: {val_acc5:.4f}, " +
+            #                 f"time: {val_time:.2f}")
+            # model save
+            if epoch % save_model_step == 0 or epoch == epochs-1:
+                model_path = os.path.join(
+                    train_save_path, f"Epoch-{epoch}-Loss-{train_loss}")
+                torch.save(vgg19_model.state_dict(), model_path + '.pth')
+                logger.info(f"----- Save model: {model_path}.pth")
 
 
 if __name__ == "__main__":
