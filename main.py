@@ -154,7 +154,7 @@ def main(arg):
     optimizer = torch.optim.Adam(vgg19_model.parameters(), lr=arg.learning_rate)
 
     if mode == 'train':
-        train_save_path = f'./outputs/train-{time.strftime("%Y%m%d-%H-%M-%S")}'
+        train_save_path = f'{arg.output}train-{time.strftime("%Y%m%d-%H-%M-%S")}'
         if not os.path.exists(train_save_path):
             os.makedirs(train_save_path, exist_ok=True)
         logger = get_logger(filename=os.path.join(train_save_path, 'log.txt'))
