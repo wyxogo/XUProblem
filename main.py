@@ -160,7 +160,7 @@ def main(arg):
         logger = get_logger(filename=os.path.join(train_save_path, 'log.txt'))
         lowest_loss = 100
         for epoch in range(1,arg.epochs+1):
-            logger.info(f"Now training epoch {epoch+1}. LR={optimizer.state_dict()['param_groups'][0]['lr']:.6f}")
+            logger.info(f"Now training epoch {epoch}. LR={optimizer.state_dict()['param_groups'][0]['lr']:.6f}")
             train_loss, train_acc, train_time = train(dataloader=dataloader,
                                                         model=vgg19_model,
                                                         criterion=criterion,
