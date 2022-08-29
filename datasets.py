@@ -46,28 +46,27 @@ class MINICIFAR100(CIFAR100):
             all_mini_labels.extend(np.argwhere(label == i).flatten().tolist())
         return all_mini_labels,mini_labels
 
-def get_dataset(mean, std, mini_label_names, mode='train', data_path=None):
-    assert mode in ['train', 'val']
-    if mode == 'train':
+def get_dataset(arg):
+    assert arg.mode in ['train', 'test']
+    if arg.mode == 'train':
         transform = transforms.Compose([
             transforms.RandomCrop(32, padding=4),
             transforms.RandomHorizontalFlip(),
             transforms.RandomRotation(15),  # 数据增强
             transforms.ToTensor(),
-            transforms.Normalize(mean, std)])
-        dataset = MINICIFAR100(root=data_path, mini_label_names=mini_label_names, train=True, transform=transform, download=True)
+            transforms.Normalize(arg.mean, arg.std)])
+        dataset = MINICIFAR100(root=arg.data_path, mini_label_names=arg.mini_label_names, train=True, transform=transform, download=True)
     else:
-        mode = 'test'
+        arg.mode = 'test'
         transform = transforms.Compose([
             transforms.ToTensor(),
-            transforms.Normalize(mean, std)])
-        dataset = MINICIFAR100(root=data_path, mini_label_names=mini_label_names, train=False, transform=transform, download=True)
+            transforms.Normalize(arg.mean, arg.std)])
+        dataset = MINICIFAR100(root=arg.data_path, mini_label_names=arg.mini_label_names, train=False, transform=transform, download=True)
 
     return dataset
 
-
-def get_dataloader(dataset, batch_size, mode='train', num_workers=2):
-    if mode == 'train':
-        return DataLoader(dataset, batch_size, shuffle=True, num_workers=num_workers)
+def get_dataloader(dataset, arg):
+    if arg.mode == 'train':
+        return DataLoader(dataset, arg.batch_size, shuffle=True, num_workers=arg.num_workers)
     else:
-        return DataLoader(dataset, batch_size, shuffle=False, num_workers=num_workers)
+        return DataLoader(dataset, arg.batch_size, shuffle=False, num_workers=arg.num_workers)
