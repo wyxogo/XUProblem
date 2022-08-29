@@ -170,7 +170,7 @@ def main(arg):
                     f"time: {train_time:.2f}")
 
             # model save
-            if epoch % arg.save_model_step == 0 or epoch == epochs:
+            if epoch % arg.save_model_step == 0 or epoch == arg.epochs:
                 model_path = os.path.join(
                     train_save_path, f"Epoch-{epoch}-Loss-{train_loss}")
                 if train_loss < lowest_loss:
