@@ -136,6 +136,13 @@ def test(dataloader,
 def main(arg):
     device = 'cuda' if torch.cuda.is_available() else 'cpu'
     
+    if arg.problem == 1:
+        arg.mini_label_names = ['maple', 'bed', 'bus', 'plain', 'dolphin',
+                            'bottle', 'cloud', 'bridge', 'baby', 'rocket']
+    elif arg.problem == 2:
+        arg.mini_label_names = ['maple','bed','bus','plain','streetcar',
+                            'oak','palm','pine','willow','forest']
+
     mode = arg.mode
     best_model_path = arg.output+'best_model/'
 

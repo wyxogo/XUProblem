@@ -47,9 +47,10 @@ def get_arguments():
     parser = argparse.ArgumentParser('VGG19_10')
     parser.add_argument('--mode', type=str, default='train')
     parser.add_argument('--data_path', type=str, default='./dataset/')
-    parser.add_argument('--mini_label_names', type=list, default=['maple', 'bed', 'bus', 'plain', 'dolphin',
-                                                                    'bottle', 'cloud', 'bridge', 'baby', 'rocket'])
-    # parser.add_argument('--best_model_path', type=str, default='./outputs/best_model/')
+
+    parser.add_argument('--mini_label_names', type=list, default=None)
+    parser.add_argument('--problem', type=int, default=1)
+
     
     parser.add_argument('--batch_size', type=int, default=64)
     parser.add_argument('--learning_rate', type=int, default=1e-4)
