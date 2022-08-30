@@ -9,6 +9,7 @@ import time
 from vgg_model import build_model
 from datasets import get_dataset, get_dataloader
 from utils import get_logger, get_arguments ,AverageMeter
+from tsne import build_tsne
 
 
 def train(dataloader: DataLoader, 
@@ -152,6 +153,22 @@ def main(arg):
 
     criterion = nn.CrossEntropyLoss()
     optimizer = torch.optim.Adam(vgg19_model.parameters(), lr=arg.learning_rate)
+
+    if arg.tsne:
+        assert os.path.isfile(best_model_path+'model.pth') is True
+        vgg19_model.load_state_dict(torch.load(best_model_path+'model.pth'))
+        vgg19_model.to(device)
+        vgg19_model_last_feature = vgg19_model.premodel.features.eval() 
+        feature_data = []
+        # label = dataloader.dataset.targets
+        for batch_id, data in enumerate(dataloader):
+            samples = data[0].to('cuda', non_blocking=True)
+            labels = data[1].to('cuda', non_blocking=True)
+            feature = vgg19_model_last_feature(samples)
+            feature_data.extend(feature.squeeze().tolist())
+        build_tsne(feature_data, dataset.targets,f'T-SNE{arg.problem}',arg)
+        print("Finish T-SNE")
+        return 
 
     if mode == 'train':
         train_save_path = f'{arg.output}train-{time.strftime("%Y%m%d-%H-%M-%S")}'

@@ -67,5 +67,8 @@ def get_arguments():
     parser.add_argument('--numclass', type=int, default=10)
     parser.add_argument('--output', type=str, default='./outputs/')
 
+    parser.add_argument('--tsne', action='store_true')
+
+
     arguments = parser.parse_args()
     return arguments
