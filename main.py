@@ -162,8 +162,8 @@ def main(arg):
         feature_data = []
         # label = dataloader.dataset.targets
         for batch_id, data in enumerate(dataloader):
-            samples = data[0].to('cuda', non_blocking=True)
-            labels = data[1].to('cuda', non_blocking=True)
+            samples = data[0].to(device, non_blocking=True)
+            labels = data[1].to(device, non_blocking=True)
             feature = vgg19_model_last_feature(samples)
             feature_data.extend(feature.squeeze().tolist())
         build_tsne(feature_data, dataset.targets,f'T-SNE{arg.problem}',arg)
