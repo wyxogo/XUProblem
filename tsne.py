@@ -14,7 +14,7 @@ def build_tsne(feature_data, label, title,arg):
     for i in range(data.shape[0]):
         plt.text(data[i, 0], data[i, 1], str(label[i]),
                  color=plt.cm.Set1(label[i] / 10.),
-                 fontdict={'weight': 'bold', 'size': 6})
+                 fontdict={'weight': 'bold', 'size': 9})
     plt.xticks([])
     plt.yticks([])
     plt.title(title)
