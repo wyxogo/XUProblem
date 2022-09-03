@@ -1,0 +1,6 @@
+2022-08-30 13:01:10,659 ----- Start Test
+2022-08-30 13:01:15,308 Test Step[0000/0032], Avg Loss: 0.0133, Avg Test Acc: 0.8750
+2022-08-30 13:01:15,485 Test Step[0010/0032], Avg Loss: 0.0180, Avg Test Acc: 0.8665
+2022-08-30 13:01:15,613 Test Step[0020/0032], Avg Loss: 0.0225, Avg Test Acc: 0.8393
+2022-08-30 13:01:15,738 Test Step[0030/0032], Avg Loss: 0.0333, Avg Test Acc: 0.7812
+2022-08-30 13:01:15,816 Test Loss: 0.0344, Test Acc: 0.7810, time: 2.89

@@ -2,8 +2,10 @@ main.ipynb
 
 dataset/
 
-outputs/
-outputs1/
-outputs2/
+outputs1/best_model
+outputs1/train*/*.pth
+
+outputs2/best_model
+outputs2/train*/*.pth
 
 __pycache__/
