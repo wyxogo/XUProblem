@@ -203,9 +203,10 @@ def main(arg):
         assert os.path.isfile(best_model_path+'model.pth') is True
         vgg19_model.load_state_dict(torch.load(best_model_path+'model.pth'))
         vgg19_model.to(device)
-        vgg19_model_last_feature = vgg19_model.premodel.features.eval() 
+        # Select all layers before 'classifier' of VGG19, 
+        # that is all layers up to the last convolutional layer
+        vgg19_model_last_feature = vgg19_model.premodel.features.eval()
         feature_data = []
-        # label = dataloader.dataset.targets
         for batch_id, data in enumerate(dataloader):
             samples = data[0].to(device, non_blocking=True)
             labels = data[1].to(device, non_blocking=True)
