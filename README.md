@@ -71,6 +71,8 @@ python main.py --tsne --mode=test --batch_size=32 --output="./outputs2/" --probl
 
 ### T-SNE图示例
 
+对于问题一和二中预测结果，生成T-SNE图如下所示，图中不同数字表示不同的类别，看以看出`问题一`的数据区分更加发散，`问题二`中的结果有部分数据重叠，由此可见数据之间的差异会影响模型的表达能力
+
 <center class="half">
 <img src="/outputs1/T-SNE1.jpg" alt="T-SNE1" style="zoom: 5%;" />
 <img src="/outputs2/T-SNE2.jpg" alt="T-SNE2" style="zoom: 5%;" />
