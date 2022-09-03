@@ -72,6 +72,6 @@ python main.py --tsne --mode=test --batch_size=32 --output="./outputs2/" --probl
 ### T-SNE图示例
 
 <center class="half">
-<img src="/outputs1/T-SNE1.jpg" alt="T-SNE1" style="zoom: 10%;" />
-<img src="/outputs2/T-SNE2.jpg" alt="T-SNE2" style="zoom: 10%;" />
+<img src="/outputs1/T-SNE1.jpg" alt="T-SNE1" style="zoom: 5%;" />
+<img src="/outputs2/T-SNE2.jpg" alt="T-SNE2" style="zoom: 5%;" />
 </center>
