@@ -39,15 +39,15 @@
 ├── utils.py
 └── vgg_model.py
 ```
+`dataset`为数据集路径，第一次执行后会自动创建下载
 
+`outputs` 中保存输出文件，包括`T-SNE`图，训练日志，训练模型保存，测试日志，其中`best_model`中保存的是所有训练保存模型中损失函数最低的模型，测试时需要加载该模型
 
 ## 使用
 
 ### 在Colab上使用
 
-<a href="https://colab.research.google.com/github/wyxogo/XUProblem/blob/master/colab.ipynb" target="_parent"><img src="https://colab.research.google.com/assets/colab-badge.svg" alt="Open In Colab"/></a>
-
-打开上述链接后逐步执行即可
+<a href="https://colab.research.google.com/github/wyxogo/XUProblem/blob/master/colab.ipynb" target="_parent"><img src="https://colab.research.google.com/assets/colab-badge.svg" alt="Open In Colab"/></a> 打开链接后逐步执行即可（需科学用网）
 
 ### 在本地使用
 
