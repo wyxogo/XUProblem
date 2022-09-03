@@ -1,9 +1,9 @@
 main.ipynb
-dataset/cifar-100-python.tar.gz
-dataset/cifar-100-python/file.txt~
-dataset/cifar-100-python/meta
-dataset/cifar-100-python/test
-dataset/cifar-100-python/train
+
+dataset/
 
 outputs/
+outputs1/
+outputs2/
+
 __pycache__/

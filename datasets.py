@@ -5,6 +5,26 @@ from torch.utils.data import DataLoader
 from torchvision.datasets.cifar import CIFAR100
 
 class MINICIFAR100(CIFAR100):
+    ''' Mini CIFAR100 
+
+    Create a class that gets part of the CIFAR100 dataset, 
+    inherited from torchvision.datasets.cifar.CIFAR100
+
+    Args:
+        root (string): Root directory of dataset where directory
+            ``cifar-10-batches-py`` exists or will be saved to if download is set to True.
+        train (bool, optional): If True, creates dataset from training set, otherwise
+            creates from test set.
+        transform (callable, optional): A function/transform that takes in an PIL image
+            and returns a transformed version. E.g, ``transforms.RandomCrop``
+        target_transform (callable, optional): A function/transform that takes in the
+            target and transforms it.
+        download (bool, optional): If true, downloads the dataset from the internet and
+            puts it in root directory. If dataset is already downloaded, it is not
+            downloaded again.
+
+    '''
+    
     def __init__(
         self,
         root: str,
@@ -28,12 +48,11 @@ class MINICIFAR100(CIFAR100):
 
         self.data = self.mini_data
         self.targets = self.mini_targets
-    #     self._load_meta()
 
-    # def _load_meta(self,mini_label_names) -> None:
         self.class_to_idx = {_class: i for i, _class in enumerate(self.mini_label_names)}
 
     def get_all_mini_idx(self, mini_label_names, class_idxs: list, label: list):
+        ''' Get all indexs of all mini labels '''
         mini_labels = []
         for mini_label_name in mini_label_names:
             for class_name in class_idxs.keys():
@@ -49,10 +68,10 @@ class MINICIFAR100(CIFAR100):
 def get_dataset(arg):
     assert arg.mode in ['train', 'test']
     if arg.mode == 'train':
-        transform = transforms.Compose([
+        transform = transforms.Compose([            # Data enhancement
             transforms.RandomCrop(32, padding=4),
             transforms.RandomHorizontalFlip(),
-            transforms.RandomRotation(15),  # 数据增强
+            transforms.RandomRotation(15),  
             transforms.ToTensor(),
             transforms.Normalize(arg.mean, arg.std)])
         dataset = MINICIFAR100(root=arg.data_path, mini_label_names=arg.mini_label_names, train=True, transform=transform, download=True)

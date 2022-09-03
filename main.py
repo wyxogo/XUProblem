@@ -5,11 +5,49 @@ from torch.utils.data import DataLoader
 import os
 import sys
 import time
+import argparse
 
 from vgg_model import build_model
 from datasets import get_dataset, get_dataloader
-from utils import get_logger, get_arguments ,AverageMeter
+from utils import get_logger ,AverageMeter
 from tsne import build_tsne
+
+def get_arguments():
+    """return argumeents"""
+    parser = argparse.ArgumentParser('VGG19_10')
+
+    # Model setting
+    parser.add_argument('--mode', type=str, default='train')                # Model mode
+    parser.add_argument('--data_path', type=str, default='./dataset/')      # Data path
+
+    parser.add_argument('--pretrained', type=bool, default=True)            # Whether to use the default weights
+    parser.add_argument('--numclass', type=int, default=10)                 # class number of result dimension
+
+    # Data setting
+    parser.add_argument('--mini_label_names', type=list, default=None)
+    parser.add_argument('--problem', type=int, default=1)
+
+    parser.add_argument('--mean', type=list, default=[0.5070751592371323, 0.48654887331495095, 0.4409178433670343])
+    parser.add_argument('--std', type=int, default=[0.2673342858792401, 0.2564384629170883, 0.27615047132568404])  
+
+    parser.add_argument('--num_workers', type=int, default=2)
+
+    # Train setting
+    parser.add_argument('--batch_size', type=int, default=64)
+    parser.add_argument('--learning_rate', type=int, default=1e-4)
+
+    parser.add_argument('--epochs', type=int, default=50)
+    parser.add_argument('--save_model_step', type=int, default=25)
+    parser.add_argument('--test_steps', type=int, default=10)
+
+    # Output setting
+    parser.add_argument('--output', type=str, default='./outputs/')
+
+    # T-SNE
+    parser.add_argument('--tsne', action='store_true')
+
+    arguments = parser.parse_args()
+    return arguments
 
 
 def train(dataloader: DataLoader, 
@@ -97,8 +135,7 @@ def test(dataloader,
         logger: logger for logging, default: None
     Returns:
         test_loss_meter.avg: float, average loss on current process/gpu
-        test_acc1_meter.avg: float, average top1 accuracy on current process/gpu
-        test_acc5_meter.avg: float, average top5 accuracy on current process/gpu
+        test_acc_meter.avg: float, average top1 accuracy on current process/gpu
         test_time: float, testitaion time
     """
     model.eval()
@@ -137,6 +174,7 @@ def test(dataloader,
 def main(arg):
     device = 'cuda' if torch.cuda.is_available() else 'cpu'
     
+    # Step 1: Set the label name according to the problem
     if arg.problem == 1:
         arg.mini_label_names = ['maple', 'bed', 'bus', 'plain', 'dolphin',
                             'bottle', 'cloud', 'bridge', 'baby', 'rocket']
@@ -147,13 +185,20 @@ def main(arg):
     mode = arg.mode
     best_model_path = arg.output+'best_model/'
 
+    # Step 2: Get dataloader
     dataset = get_dataset(arg)
     dataloader = get_dataloader(dataset, arg)
+
+    # Step 3: Build model
     vgg19_model = build_model(arg)
 
+    # Setp 4: Set loss function
     criterion = nn.CrossEntropyLoss()
+
+    # Setp 5: Set loss function
     optimizer = torch.optim.Adam(vgg19_model.parameters(), lr=arg.learning_rate)
 
+    # Draw T-SNE figure
     if arg.tsne:
         assert os.path.isfile(best_model_path+'model.pth') is True
         vgg19_model.load_state_dict(torch.load(best_model_path+'model.pth'))
@@ -170,6 +215,7 @@ def main(arg):
         print("Finish T-SNE")
         return 
 
+    # Training
     if mode == 'train':
         train_save_path = f'{arg.output}train-{time.strftime("%Y%m%d-%H-%M-%S")}'
         if not os.path.exists(train_save_path):
@@ -204,7 +250,8 @@ def main(arg):
                     torch.save(vgg19_model.state_dict(), best_model_path+'model.pth')
                 torch.save(vgg19_model.state_dict(), model_path + '.pth')
                 logger.info(f"----- Save model: {model_path}.pth")
-
+    
+    # Testing
     elif mode == "test":
         test_save_path = arg.output
         if not os.path.exists(test_save_path):
@@ -212,6 +259,7 @@ def main(arg):
         logger = get_logger(filename=os.path.join(test_save_path, 'test_log.txt'))
         logger.info('----- Start Test')
 
+        # load model
         assert os.path.isfile(best_model_path+'model.pth') is True
         vgg19_model.load_state_dict(torch.load(best_model_path+'model.pth'))
 
