@@ -252,7 +252,7 @@ def main(arg):
                 torch.save(vgg19_model.state_dict(), model_path + '.pth')
                 logger.info(f"----- Save model: {model_path}.pth")
     
-    # Testing
+    # Testing 
     elif mode == "test":
         test_save_path = arg.output
         if not os.path.exists(test_save_path):
